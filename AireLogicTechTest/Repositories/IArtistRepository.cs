@@ -3,6 +3,6 @@ namespace AireLogicTechTest.Repositories
     public interface IArtistRepository
     {
         string GetArtistId(string artistName);
-        string GetSongsByArtistId(string artistId);
+        IEnumerable<string> GetSongsByArtistId(string artistId);
     }
 }

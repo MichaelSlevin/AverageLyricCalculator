@@ -7,7 +7,7 @@ namespace AireLogicTechTest.Repositories
             throw new NotImplementedException();
         }
 
-        public string GetSongsByArtistId(string artistId)
+        public IEnumerable<string> GetSongsByArtistId(string artistId)
         {
             throw new NotImplementedException();
         }

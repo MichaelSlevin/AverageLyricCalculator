@@ -13,10 +13,9 @@ namespace AireLogicTechTest.Services
         }
         public IEnumerable<string> GetSongsByArtist(string artistName)
         {
-            _artistRepo.GetSongsByArtistId(
+            return _artistRepo.GetSongsByArtistId(
                 _artistRepo.GetArtistId(artistName)
             );
-            return new List<string>();
         }
     }
 }

@@ -1,5 +1,6 @@
 using AireLogicTechTest.Repositories;
 using AireLogicTechTest.Services;
+using FluentAssertions;
 
 namespace AireLogicTechTest.Testing.Services;
 
@@ -48,5 +49,26 @@ public class ArtistServiceTests
             Times.Once
         );
         
+    }
+
+    [Test]
+    [AutoData]
+    public void Returns_the_correct_songs(
+        Mock<IArtistRepository> artistRepository,
+        string artistName,
+        string artistId,
+        List<string> expectedSongList
+    )
+    {
+        artistRepository.Setup(x => x.GetArtistId(artistName)).Returns(artistId);
+        artistRepository.Setup(x => x.GetSongsByArtistId(artistId)).Returns(expectedSongList);
+        var service = new ArtistService(artistRepository.Object);
+
+        var result = service.GetSongsByArtist(artistName);
+
+        result.Should().BeEquivalentTo(expectedSongList);
+
+
+
     }
 }
