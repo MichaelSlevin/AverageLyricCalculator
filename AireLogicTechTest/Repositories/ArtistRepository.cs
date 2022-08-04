@@ -6,5 +6,10 @@ namespace AireLogicTechTest.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public string GetSongsByArtistId(string artistId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
