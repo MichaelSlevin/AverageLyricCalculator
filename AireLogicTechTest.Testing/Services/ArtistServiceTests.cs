@@ -67,8 +67,5 @@ public class ArtistServiceTests
         var result = service.GetSongsByArtist(artistName);
 
         result.Should().BeEquivalentTo(expectedSongList);
-
-
-
     }
 }
