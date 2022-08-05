@@ -37,7 +37,7 @@ This app makes use of 2 third party APIs
 
 Due to lack of time, certain assumptions will be made:
 
-1. The result returned from music brainz with the highest score will be assumed to be the artist the user was searching for
+1. The result returned from music brainz with the highest score will be assumed to be the artist the user was searching for. I am also making the assumption that the top search result is the result with the highest score.
 2. It makes the assumption that if the music brainz api were replaced wuth another, the new api would still work by searching for an artist to retrieve an ID that would be used in the search for songs titles
 
 

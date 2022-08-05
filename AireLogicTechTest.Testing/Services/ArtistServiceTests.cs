@@ -1,6 +1,5 @@
 using AireLogicTechTest.Repositories;
 using AireLogicTechTest.Services;
-using FluentAssertions;
 
 namespace AireLogicTechTest.Testing.Services;
 
