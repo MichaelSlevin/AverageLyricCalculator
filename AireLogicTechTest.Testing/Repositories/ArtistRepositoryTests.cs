@@ -98,4 +98,30 @@ public class ArtistRepositoryTests
             Times.Once
         );
     }
+
+    [Test]
+    [AutoData]
+    public async Task GetSongsByArtistId_Calls_Client_GetWorksByArtistId_OnceIf0ThereAreResults(
+        Mock<IMusicBrainzClient> client,
+        string artistId,
+        WorksFullResponse worksFullResponse
+    )
+    {
+        //if there are 0 results, then it should be called 1 time
+        worksFullResponse.WorkCount = 0;
+
+        client.Setup(x => x.GetWorksByArtistId(artistId, 0, 100))
+            .ReturnsAsync(worksFullResponse);
+        var repo = new ArtistRepository(client.Object);
+        var result = await repo.GetSongsByArtistId(artistId);
+        
+        client.Verify(x => 
+            x.GetWorksByArtistId(artistId, 0, 100), 
+            Times.Once
+        );
+        client.Verify(x => 
+            x.GetWorksByArtistId(artistId, 100, 100), 
+            Times.Never()
+        );
+    }
 }
