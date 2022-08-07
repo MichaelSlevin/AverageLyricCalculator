@@ -17,7 +17,18 @@ namespace AireLogicTechTest.Repositories
 
         public async Task<IEnumerable<string>> GetSongsByArtistId(string artistId)
         {
-            throw new NotImplementedException();
+            var offset = 0;
+            var resultsReturnedLimit = 100;
+            int totalNumberOfResults = -1;
+
+            while(totalNumberOfResults == -1 || offset < totalNumberOfResults) 
+            {
+                var works = await _client.GetWorksByArtistId(artistId, offset, resultsReturnedLimit);
+                if(totalNumberOfResults == - 1)
+                    totalNumberOfResults = works.WorkCount;
+                offset = offset + resultsReturnedLimit;
+            }
+            return new List<string>();
         }
     }
 }
