@@ -1,16 +1,28 @@
+using Newtonsoft.Json;
+
 namespace AireLogicTechTest.Repositories
 {
     public interface IMusicBrainzClient
     {
-        ArtistSearchFullResponse SearchArtistByName(string artistName);
+         Task<ArtistSearchFullResponse> SearchArtistByName(string artistName);
         
     }
 
     public class MusicBrainzClient : IMusicBrainzClient
     {
-        public ArtistSearchFullResponse SearchArtistByName(string artistName)
+        private readonly HttpClient _client;
+        public MusicBrainzClient(IHttpClientFactory httpClientFactory)
         {
-           throw new NotImplementedException();
+            _client = httpClientFactory.CreateClient("musicbrainz");
+            _client.BaseAddress = new Uri("https://musicbrainz.org");
+            _client.DefaultRequestHeaders.Add("User-Agent", "TechTest/1.0.0 ( mikeslevin@gmail.com )");
+        }
+        public async Task<ArtistSearchFullResponse> SearchArtistByName(string artistName)
+        {
+            
+            var response = await _client.GetAsync($"/ws/2/artist/?query={artistName}&fmt=json&limit=1");
+            var artistSearchFullResponse = await response.Content.ReadAsStringAsync();
+           return JsonConvert.DeserializeObject<ArtistSearchFullResponse>(artistSearchFullResponse);
         }
     }
 }

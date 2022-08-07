@@ -2,7 +2,7 @@ namespace AireLogicTechTest.Repositories
 {
     public interface IArtistRepository
     {
-        string GetArtistId(string artistName);
-        IEnumerable<string> GetSongsByArtistId(string artistId);
+        Task<string> GetArtistId(string artistName);
+        Task<IEnumerable<string>> GetSongsByArtistId(string artistId);
     }
 }

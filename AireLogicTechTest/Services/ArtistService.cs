@@ -11,10 +11,10 @@ namespace AireLogicTechTest.Services
         {
             _artistRepo = artistRepo;
         }
-        public IEnumerable<string> GetSongsByArtist(string artistName)
+        public async Task<IEnumerable<string>> GetSongsByArtist(string artistName)
         {
-            return _artistRepo.GetSongsByArtistId(
-                _artistRepo.GetArtistId(artistName)
+            return await _artistRepo.GetSongsByArtistId(
+                await _artistRepo.GetArtistId(artistName)
             );
         }
     }

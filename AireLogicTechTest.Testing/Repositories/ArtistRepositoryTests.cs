@@ -11,7 +11,7 @@ public class ArtistRepositoryTests
 
     [Test]
     [AutoData]
-    public void GetArtistId_Calls_The_Client(
+    public async Task GetArtistId_Calls_The_Client(
         Mock<IMusicBrainzClient> client,
         IEnumerable<ArtistResponse> artistListRepsonse,
         string artistName
@@ -20,18 +20,18 @@ public class ArtistRepositoryTests
         var response = new ArtistSearchFullResponse {
             Artists = artistListRepsonse
         };
-        client.Setup(x => x.SearchArtistByName(artistName)).Returns(response);
+        client.Setup(x => x.SearchArtistByName(artistName)).ReturnsAsync(response);
         var repo = new ArtistRepository(client.Object);
-        repo.GetArtistId(artistName);
+        await repo.GetArtistId(artistName);
         client.Verify(
-            x => x.SearchArtistByName(artistName),
+            (x) => x.SearchArtistByName(artistName),
             Times.Once
         );
     }
 
     [Test]
     [AutoData]
-    public void GetArtistId_Returns_The_Correct_Id(
+    public async Task GetArtistId_Returns_The_Correct_Id(
         Mock<IMusicBrainzClient> client,
         ArtistResponse artistResponse,
         string artistName
@@ -42,9 +42,9 @@ public class ArtistRepositoryTests
                 artistResponse
             }
         };
-        client.Setup(x => x.SearchArtistByName(artistName)).Returns(response);
+        client.Setup(x => x.SearchArtistByName(artistName)).ReturnsAsync(response);
         var repo = new ArtistRepository(client.Object);
-        var result = repo.GetArtistId(artistName);
+        var result = await repo.GetArtistId(artistName);
         
         result.Should().Be(artistResponse.Id);
     }

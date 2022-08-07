@@ -7,16 +7,15 @@ namespace AireLogicTechTest.Repositories
         {
             _client = client;
         }
-        public string GetArtistId(string artistName)
+        public async Task<string> GetArtistId(string artistName)
         {
-            return _client
-                .SearchArtistByName(artistName)
+            return (await _client.SearchArtistByName(artistName))
                 .Artists
                 .First()
                 .Id;
         }
 
-        public IEnumerable<string> GetSongsByArtistId(string artistId)
+        public async Task<IEnumerable<string>> GetSongsByArtistId(string artistId)
         {
             throw new NotImplementedException();
         }
