@@ -20,19 +20,25 @@ namespace AireLogicTechTest.Services
 
             var lyricsCountList = new ConcurrentBag<int>();
             int songsNotFound = 0;
-            Parallel.ForEach(songTitles, async (title)=> {
-                try {
-                    var lyrics = await _client.GetLyrics(artistName, title);
-                    var lyricsCount = _countingService.CleanAndCountLyrics(lyrics);
-                    lyricsCountList.Add(lyricsCount);
-                } catch (SongNotFoundException e)
-                {
-                    Console.WriteLine(e.Message);
-                    Interlocked.Increment(ref songsNotFound);
+
+            Parallel.ForEach(
+                songTitles, 
+                new ParallelOptions { MaxDegreeOfParallelism = 100},
+                async (title) => {
+                    try {
+                        var lyrics = _client.GetLyrics(artistName, title).Result;
+                        var lyricsCount = _countingService.CleanAndCountLyrics(lyrics);
+                        lyricsCountList.Add(lyricsCount);
+                    } 
+                    catch (AggregateException e)
+                    {
+                        Console.WriteLine(e.InnerException.Message);
+                        Interlocked.Increment(ref songsNotFound);
+                    }
                 }
-            });
+            );
             return new AverageWordCountResponse {
-                AverageWordCount = lyricsCountList.Average(),
+                AverageWordCount = lyricsCountList.Count() > 0 ? lyricsCountList.Average() : -1,
                 NumberOfSongsNotFound = songsNotFound
             };
         }

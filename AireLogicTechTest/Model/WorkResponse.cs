@@ -4,10 +4,10 @@ namespace AireLogicTechTest.Repositories
 {
     public class WorkResponse
     {
-        [JsonProperty("id")]
+        [JsonProperty("title")]
         public string Title { get; set; }
         
-        [JsonProperty("name")]
+        [JsonProperty("type")]
         public string Type { get; set; }
 
     }

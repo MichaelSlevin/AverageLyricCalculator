@@ -1,3 +1,4 @@
+using System.Web;
 using Newtonsoft.Json;
 
 namespace AireLogicTechTest.Repositories
@@ -22,7 +23,7 @@ namespace AireLogicTechTest.Repositories
         public async Task<ArtistSearchFullResponse> SearchArtistByName(string artistName)
         {
             
-            var response = await _client.GetAsync($"/ws/2/artist/?query={artistName}&fmt=json&limit=1");
+            var response = await _client.GetAsync($"/ws/2/artist/?query={HttpUtility.UrlEncode(artistName)}&fmt=json&limit=1");
             var artistSearchFullResponse = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<ArtistSearchFullResponse>(artistSearchFullResponse);
         }
