@@ -187,8 +187,41 @@ public class ArtistRepositoryTests
         var result = await repo.GetSongsByArtistId(artistId);
         
         result.Count().Should().Be(3);
-        result.Contains(work1.Title);
-        result.Contains(work2.Title);
-        result.Contains(work3.Title);
+        result.Contains(work1.Title).Should().BeTrue();;
+        result.Contains(work2.Title).Should().BeTrue();;
+        result.Contains(work3.Title).Should().BeTrue();;
+    }
+
+    [Test]
+    [AutoData]
+    public async Task GetSongsByArtistId_Returns_DoesNotReturnWorksThatArentSongs(
+        Mock<IMusicBrainzClient> client,
+        string artistId,
+        WorkResponse work1,
+        WorkResponse work2,
+        WorkResponse work3
+    )
+    {
+        work1.Type = "Song";
+        work2.Type = "Song";
+        work3.Type = "Something else";
+        var response = new WorksFullResponse {
+            WorkCount = 3,
+            Works = new List<WorkResponse> {
+                work1,
+                work2,
+                work3
+            },        
+        };
+
+        client.Setup(x => x.GetWorksByArtistId(artistId, 0, 100))
+            .ReturnsAsync(response);
+        var repo = new ArtistRepository(client.Object);
+        var result = await repo.GetSongsByArtistId(artistId);
+        
+        result.Count().Should().Be(2);
+        result.Contains(work1.Title).Should().BeTrue();
+        result.Contains(work2.Title).Should().BeTrue();
+        result.Contains(work3.Title).Should().BeFalse();
     }
 }

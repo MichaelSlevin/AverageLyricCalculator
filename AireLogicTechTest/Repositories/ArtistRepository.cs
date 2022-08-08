@@ -32,8 +32,7 @@ namespace AireLogicTechTest.Repositories
                 offset = offset + resultsReturnedLimit;
             }
 
-            return works.Select(x => x.Title);
-            
+            return works.Where(x => x.Type == "Song").Select(x => x.Title);
         }
     }
 }
