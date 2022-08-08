@@ -21,14 +21,19 @@ namespace AireLogicTechTest.Repositories
             var resultsReturnedLimit = 100;
             int totalNumberOfResults = -1;
 
+            var works = new List<WorkResponse>();
+
             while(totalNumberOfResults == -1 || offset < totalNumberOfResults) 
             {
-                var works = await _client.GetWorksByArtistId(artistId, offset, resultsReturnedLimit);
+                var response = await _client.GetWorksByArtistId(artistId, offset, resultsReturnedLimit);
+                works.AddRange(response.Works);
                 if(totalNumberOfResults == - 1)
-                    totalNumberOfResults = works.WorkCount;
+                    totalNumberOfResults = response.WorkCount;
                 offset = offset + resultsReturnedLimit;
             }
-            return new List<string>();
+
+            return works.Select(x => x.Title);
+            
         }
     }
 }
