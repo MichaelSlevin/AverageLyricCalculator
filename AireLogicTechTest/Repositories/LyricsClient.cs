@@ -15,7 +15,7 @@ namespace AireLogicTechTest.Repositories
         {
             var response = await _client.GetAsync($"/ws/2/artist/?query={artistName}&fmt=json&limit=1");
             if(!response.IsSuccessStatusCode) {
-                throw new Exception("Song not found");
+                throw new SongNotFoundException($"No results from for {songTitle} by {artistName}");
             }
             var artistSearchFullResponse = await response.Content.ReadAsStringAsync();
             return JsonConvert.DeserializeObject<LyricsResponse>(artistSearchFullResponse).Lyrics;
