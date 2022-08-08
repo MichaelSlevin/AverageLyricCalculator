@@ -2,9 +2,10 @@
 
 This is my implementation of a console app that calculates the average number of lyrics for any given artist. 
 
-To run the app, open the terminal, cd into the AireLogicTechTest folder and enter the following commands:
+To run the app, open the terminal, cd into the AireLogicTechTest folder, restore, build and run the project by entering the following commands:
 
 ```bash
+cd AireLogicTechTest
 dotnet restore
 dotnet build
 dotnet run
